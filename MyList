@@ -1,0 +1,59 @@
+#include "string"
+#include "algorithm"
+#include "iostream"
+struct Node
+{
+	std::string Data;
+	Node* Next;
+	Node* Down;
+	int Level;
+
+	Node(std::string dta = 0, int lvl = 0);
+
+	friend std::ostream& operator<<(std::ostream &out, const Node node)
+	{
+			out << node.Data << std::endl;
+			return out;
+	}
+};
+Node::Node(std::string dta, int lvl)
+{
+	Data = dta;
+	Level = lvl;
+}
+
+class MyList
+{
+public:
+	Node* First;
+	Node* End;
+
+	void PushCurrent(std::string data);
+	void PushDown(std::string data);
+	std::pair<std::string, int> Pop();
+	void Print();
+};
+
+void MyList::PushCurrent(std::string data)
+{
+	End->Next = new Node(data, End->Level);
+}
+void MyList::PushDown(std::string data)
+{
+	End->Down = new Node(data, End->Level + 1);
+}
+std::pair<std::string, int> MyList::Pop()
+{
+	std::pair<std::string, int> temp(End->Data, End->Level);
+	delete End;
+	return temp;
+}
+void MyList::Print()
+{
+	Node* temp = First;
+	while (temp->Down != 0)
+	{
+		std::cout<< " " << temp;
+		temp = temp->Down;
+	}
+}
